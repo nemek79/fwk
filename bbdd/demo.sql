@@ -1,0 +1,16 @@
+DROP DATABASE IF EXISTS demobd;
+
+CREATE DATABASE demobd
+  CHARACTER SET utf8
+        COLLATE utf8_general_ci;
+
+USE demobd;
+
+CREATE TABLE t_demo
+(
+	id			INT(8)			NOT NULL AUTO_INCREMENT,
+	descripcion	VARCHAR(32)		NOT NULL,
+
+	PRIMARY KEY(id)
+
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
