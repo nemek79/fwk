@@ -2,3 +2,8 @@ server:
   port: 7001
 logging:
   config: classpath:log4j-local.xml
+spring:
+  datasource:
+    db:
+      jdbc-url: jdbc:mysql://localhost/fwkbd?useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Madrid
+      
