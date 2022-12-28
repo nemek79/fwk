@@ -1,4 +1,4 @@
-package es.vir2al.fwk.fwk.configurations;
+package es.vir2al.fwk.fwk.configurations.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
