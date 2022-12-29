@@ -1,6 +1,6 @@
 USE fwkbd;
 
-CREATE TABLE t_contacto (
+CREATE TABLE t_contactos (
 
 	id 				INT UNSIGNED 	AUTO_INCREMENT 	PRIMARY KEY,
 	nombre		    VARCHAR(64) NOT NULL,
@@ -8,4 +8,4 @@ CREATE TABLE t_contacto (
 	
 );
 
-INSERT INTO t_contacto VALUES (null,'David','Alonso Sánchez');
+INSERT INTO t_contactos VALUES (null,'David','Alonso Sánchez');

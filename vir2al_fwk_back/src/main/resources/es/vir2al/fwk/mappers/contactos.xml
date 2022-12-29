@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="es.vir2al.fwk.app.repositories.ContactosDAO">
+
+	<resultMap type="ContactoVO" id="contacto" autoMapping="true">
+		<id property="id" column="id" />
+		<result property="nombre" column="nombre" />
+		<result property="apellidos" column="apellidos" />
+    </resultMap>
+
+	<select id="getContactoById" resultMap="contacto"
+		parameterType="map">
+		<include refid="contactosSelect" />
+		<include refid="contactosFrom" />
+		<where>
+			<include refid="contactosByIdFilter" />
+		</where>
+	</select>
+
+	<select id="getContactos" resultMap="contacto"
+		parameterType="map">
+		<include refid="contactosSelect" />
+		<include refid="contactosFrom" />
+		<where>
+			<include refid="contactosFilter" />
+		</where>
+		<include refid="contactosSort" />
+	</select>
+	
+	<select id="getContactosCount" resultType="Integer">
+		<include refid="countSelect" />
+		<include refid="contactosFrom" />
+		<where>
+			<include refid="contactosFilter" />
+		</where>
+	</select>
+
+    <sql id="contactosSelect">
+        SELECT id,nombre,apellidos
+    </sql>
+
+ 	<sql id="countSelect">
+		SELECT COUNT(1)
+	</sql>   
+
+	<sql id="contactosFrom">
+		FROM t_contactos
+	</sql>
+
+	<sql id="contactosByIdFilter">
+		AND id = #{id}
+	</sql>
+
+	<sql id="contactosFilter">
+		<if test="criteria['nombre'] != null">
+			<bind name="nombre" value="'%' + criteria['nombre'] + '%'" />
+			AND nombre LIKE #{nombre}
+		</if>
+		<if test="criteria['apellidos'] != null">
+			<bind name="apellidos" value="'%' + criteria['apellidos'] + '%'" />
+			AND apellidos LIKE #{apellidos}
+		</if>
+	</sql>
+
+	<sql id="contactosSort">
+		<choose>
+			<when test="navigation.sortField != null">
+				ORDER BY ${navigation.sortField}
+				<if
+					test="navigation.sortField != null and navigation.sortOrder == -1">
+					DESC
+				</if>
+			</when>
+			<otherwise>
+				<if
+					test="navigation.sortFieldDefault != null and navigation.sortFieldDefault.size()>0">
+					ORDER BY
+					<foreach collection="navigation.sortFieldDefault"
+						separator="," index="id" item="field">
+						${field}
+						<if
+							test="navigation.sortOrderDefault != null and navigation.sortOrderDefault.size() > idx and navigation.sortOrderDefault[id] == -1 ">
+							DESC
+						</if>
+					</foreach>
+				</if>
+				<if
+					test="navigation.sortFieldDefault == null or navigation.sortFieldDefault.size() == 0">
+					ORDER BY nombre, apellidos
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+</mapper>

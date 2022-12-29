@@ -12,8 +12,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import es.vir2al.fwk.app.utils.constants.GeneralAppConstants;
+
 @Configuration
-@MapperScan(basePackages = {"es.vir2al.myissues.repositories"}, sqlSessionFactoryRef = "dbSessionFactory")
+@MapperScan(basePackages = {"es.vir2al."+GeneralAppConstants.APP_NAME+".app.repositories","es.vir2al."+GeneralAppConstants.APP_NAME+".fwk.repositories"}, sqlSessionFactoryRef = "dbSessionFactory")
 @EnableTransactionManagement
 public class DBDataSourceConfiguration extends DBSessionFactoryConfig{
 
