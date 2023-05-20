@@ -3,6 +3,8 @@ package es.vir2al.fwk.app.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -117,6 +121,35 @@ public class ContactosController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+	@PostMapping()
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+	public ResponseEntity<?> createApuesta(@Valid @RequestBody ContactoVO iVo) {
+
+        LOGGER.info("PARAMETROS {}", iVo);
+
+        DataResponse<ContactoVO> response = new DataResponse<ContactoVO>();
+        ContactoVO data = null;
+
+        try {
+            
+            data = this.contactosService.createContacto(iVo);
+            response.setData(data);
+
+        } catch (BaseException be) {
+
+			LOGGER.error("{} - CODE: {}",be.getMessage(),be.getCode());
+			response.setCode(be.getCode());
+
+        } catch (Exception e) {
+
+			LOGGER.error(e.getMessage());
+			response.setCode(ResponseConstants.UNEXPECTED_ERROR);
+            
+        }
+    
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

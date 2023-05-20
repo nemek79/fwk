@@ -26,6 +26,11 @@
 		</where>
 		<include refid="contactosSort" />
 	</select>
+
+    <insert id="createContacto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_contactos(id,nombre,apellidos)
+        VALUES (null,#{criteria.nombre},#{criteria.apellidos})
+    </insert>
 	
 	<select id="getContactosCount" resultType="Integer">
 		<include refid="countSelect" />

@@ -37,4 +37,11 @@ public interface ContactosService {
      */
     public Integer getContactosCount(ContactoRequest criteria) throws BaseException;
 
+    /**
+     * Crea un nuevo contacto
+     * @param contacto
+     * @return
+     * @throws BaseException
+     */
+    public ContactoVO createContacto(ContactoVO data) throws BaseException;
 }

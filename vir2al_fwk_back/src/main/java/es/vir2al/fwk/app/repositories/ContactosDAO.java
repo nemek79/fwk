@@ -27,4 +27,8 @@ public interface ContactosDAO {
             @Param("criteria") ContactoRequest criteria
         );
 
+    public Integer createContacto(
+            @Param("criteria") ContactoVO data
+        );
+
 }

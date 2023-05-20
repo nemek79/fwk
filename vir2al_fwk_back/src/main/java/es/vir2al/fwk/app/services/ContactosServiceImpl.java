@@ -60,4 +60,12 @@ public class ContactosServiceImpl implements ContactosService {
 
     }
     
+    @Override
+    public ContactoVO createContacto(ContactoVO data) throws BaseException {
+
+        this.contactosDAO.createContacto(data);
+
+        return data;
+    }
+
 }
