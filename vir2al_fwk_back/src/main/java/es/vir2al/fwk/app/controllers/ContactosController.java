@@ -74,7 +74,7 @@ public class ContactosController {
 
 	@GetMapping()
 	@PreAuthorize("hasAnyRole('ADMIN','USER')")
-	public ResponseEntity<?> getProyectos(@RequestParam Map<String, String> params, NavigationInfoRequest nav) {
+	public ResponseEntity<?> getContactos(@RequestParam Map<String, String> params, NavigationInfoRequest nav) {
 
         LOGGER.info("PARAMETROS {}", params);
 		LOGGER.info("NAVIGATION {}", nav);
