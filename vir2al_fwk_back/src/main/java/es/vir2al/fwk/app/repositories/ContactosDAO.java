@@ -31,4 +31,9 @@ public interface ContactosDAO {
             @Param("criteria") ContactoVO data
         );
 
+    public Integer updateContacto(
+            @Param("id") Integer id,
+            @Param("criteria") ContactoVO data
+        );
+
 }

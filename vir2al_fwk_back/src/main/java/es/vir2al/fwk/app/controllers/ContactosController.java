@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import es.vir2al.fwk.app.domain.ContactoVO;
 import es.vir2al.fwk.app.domain.requests.ContactoRequest;
 import es.vir2al.fwk.app.services.ContactosService;
 import es.vir2al.fwk.fwk.domain.requests.NavigationInfoRequest;
+import es.vir2al.fwk.fwk.domain.responses.BaseResponse;
 import es.vir2al.fwk.fwk.domain.responses.DataResponse;
 import es.vir2al.fwk.fwk.domain.responses.DataTableResponse;
 import es.vir2al.fwk.fwk.exceptions.BaseException;
@@ -152,4 +154,33 @@ public class ContactosController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+	public ResponseEntity<?> updateApuesta(@PathVariable Integer id,@Valid @RequestBody ContactoVO iVo) {
+
+        LOGGER.info("PARAMETROS {} - {}",id,iVo);
+
+        BaseResponse response = new BaseResponse();
+
+        
+        try {
+            
+            this.contactosService.updateContacto(id, iVo);
+
+        } catch (BaseException be) {
+
+			LOGGER.error("{} - CODE: {}",be.getMessage(),be.getCode());
+			response.setCode(be.getCode());
+
+        } catch (Exception e) {
+
+			LOGGER.error(e.getMessage());
+			response.setCode(ResponseConstants.UNEXPECTED_ERROR);
+            
+        }
+    
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+    
 }

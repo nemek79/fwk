@@ -68,4 +68,15 @@ public class ContactosServiceImpl implements ContactosService {
         return data;
     }
 
+    @Override
+    public void updateContacto(Integer id, ContactoVO data) throws BaseException {
+    
+        if (id == null || id <=0 || data == null || data.getId() != id) {
+            throw new BaseException(ResponseConstants.INPUT_DATA_ERROR, "El objeto a actualizar no es correcto.");
+        }
+    
+        this.contactosDAO.updateContacto(id, data);
+        
+    }
+
 }

@@ -44,4 +44,12 @@ public interface ContactosService {
      * @throws BaseException
      */
     public ContactoVO createContacto(ContactoVO data) throws BaseException;
+
+    /**
+     * Actualiza el contacto 
+     * @param id
+     * @param data
+     * @throws BaseException
+     */
+    public void updateContacto(Integer id, ContactoVO data) throws BaseException;
 }
