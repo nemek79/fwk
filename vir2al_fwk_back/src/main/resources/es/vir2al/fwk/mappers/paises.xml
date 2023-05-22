@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="es.vir2al.fwk.app.repositories.PaisesDAO">
+
+	<resultMap type="PaisVO" id="pais" autoMapping="true">
+		<id property="id" column="id" />
+        <result property="nombre" column="nombre" />
+		<result property="iso3166a2" column="iso_3166_a2" />
+		<result property="iso3166a3" column="iso_3166_a3" />
+        <result property="iso3166num" column="iso_3166_num" />
+        <result property="domain" column="domain" />
+    </resultMap>
+
+	<select id="getPaisById" resultMap="pais"
+		parameterType="map">
+		<include refid="paisesSelect" />
+		<include refid="paisesFrom" />
+		<where>
+			<include refid="paisesByIdFilter" />
+		</where>
+	</select>
+
+	<select id="getPaises" resultMap="pais"
+		parameterType="map">
+		<include refid="paisesSelect" />
+		<include refid="paisesFrom" />
+		<where>
+			<include refid="paisesFilter" />
+		</where>
+		<include refid="paisesSort" />
+	</select>
+	
+	<select id="getPaisesCount" resultType="Integer">
+		<include refid="countSelect" />
+		<include refid="paisesFrom" />
+		<where>
+			<if test="nombre != null">
+				<bind name="nombre" value="'%' + nombre + '%'" />
+				AND nombre LIKE #{nombre}
+			</if>
+		</where>
+	</select>
+
+    <sql id="paisesSelect">
+        SELECT id,nombre,iso_3166_a2,iso_3166_a3,iso_3166_num,domain
+    </sql>
+
+ 	<sql id="countSelect">
+		SELECT COUNT(1)
+	</sql>  
+
+	<sql id="paisesFrom">
+		FROM t_paises
+	</sql>
+
+	<sql id="paisesByIdFilter">
+		AND id = #{id}
+	</sql>
+
+	<sql id="paisesFilter">
+		<if test="criteria['nombre'] != null">
+			<bind name="nombre" value="'%' + criteria['nombre'] + '%'" />
+			AND nombre LIKE #{nombre}
+		</if>
+	</sql>
+
+	<sql id="paisesSort">
+		<choose>
+			<when test="navigation.sortField != null">
+				ORDER BY ${navigation.sortField}
+				<if
+					test="navigation.sortField != null and navigation.sortOrder == -1">
+					DESC
+				</if>
+			</when>
+			<otherwise>
+				<if
+					test="navigation.sortFieldDefault != null and navigation.sortFieldDefault.size()>0">
+					ORDER BY
+					<foreach collection="navigation.sortFieldDefault"
+						separator="," index="id" item="field">
+						${field}
+						<if
+							test="navigation.sortOrderDefault != null and navigation.sortOrderDefault.size() > idx and navigation.sortOrderDefault[id] == -1 ">
+							DESC
+						</if>
+					</foreach>
+				</if>
+				<if
+					test="navigation.sortFieldDefault == null or navigation.sortFieldDefault.size() == 0">
+					ORDER BY nombre
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+</mapper>
