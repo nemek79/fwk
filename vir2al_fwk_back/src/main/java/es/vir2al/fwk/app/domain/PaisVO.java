@@ -24,7 +24,16 @@ public class PaisVO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String iso3166num;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String domain;
+
+    public PaisVO() {
+
+        this.id = null;
+        this.iso3166a2 = null;
+        this.iso3166a3 = null;
+        this.iso3166num = null;
+        this.domain = null;
+
+    }
 
 }

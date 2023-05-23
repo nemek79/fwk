@@ -18,5 +18,19 @@ public class ContactoVO implements Serializable {
     private String nombre;
 
     private String apellidos;
+
+    private PaisVO paisNacimiento;
+
+    private PaisVO paisResidencia;
+
+    public ContactoVO() {
+
+        this.id = null;
+        this.nombre = null;
+        this.apellidos = null;
+        this.paisNacimiento = new PaisVO();
+        this.paisResidencia = new PaisVO();
+
+    }
     
 }

@@ -6,6 +6,18 @@
 		<id property="id" column="id" />
 		<result property="nombre" column="nombre" />
 		<result property="apellidos" column="apellidos" />
+		<result property="paisNacimiento.id" column="nacimiento_id" />
+		<result property="paisNacimiento.nombre" column="nacimiento_nombre" />
+		<result property="paisNacimiento.iso3166a2" column="nacimiento_iso_a2" />
+		<result property="paisNacimiento.iso3166a3" column="nacimiento_iso_a3" />
+		<result property="paisNacimiento.iso3166num" column="nacimiento_iso_num" />
+		<result property="paisNacimiento.domain" column="nacimiento_domain" />
+		<result property="paisResidencia.id" column="residencia_id" />
+		<result property="paisResidencia.nombre" column="residencia_nombre" />
+		<result property="paisResidencia.iso3166a2" column="residencia_iso_a2" />
+		<result property="paisResidencia.iso3166a3" column="residencia_iso_a3" />
+		<result property="paisResidencia.iso3166num" column="residencia_iso_num" />
+		<result property="paisResidencia.domain" column="residencia_domain" />
     </resultMap>
 
 	<select id="getContactoById" resultMap="contacto"
@@ -13,6 +25,7 @@
 		<include refid="contactosSelect" />
 		<include refid="contactosFrom" />
 		<where>
+			<include refid="contactosJoin" />
 			<include refid="contactosByIdFilter" />
 		</where>
 	</select>
@@ -22,6 +35,7 @@
 		<include refid="contactosSelect" />
 		<include refid="contactosFrom" />
 		<where>
+			<include refid="contactosJoin" />
 			<include refid="contactosFilter" />
 		</where>
 		<include refid="contactosSort" />
@@ -31,46 +45,60 @@
 		<include refid="countSelect" />
 		<include refid="contactosFrom" />
 		<where>
+			<include refid="contactosJoin" />
 			<include refid="contactosFilter" />
 		</where>
 	</select>
 
     <insert id="createContacto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_contactos(id,nombre,apellidos)
-        VALUES (null,#{criteria.nombre},#{criteria.apellidos})
+        INSERT INTO t_contactos(id,nombre,apellidos,pais_nacimiento_id,pais_residencia_id)
+        VALUES (null,#{criteria.nombre},#{criteria.apellidos},#{criteria.paisNacimiento.id},#{criteria.paisResidencia.id})
     </insert>
 
 	<update id="updateContacto">
 		UPDATE t_contactos
 		   SET nombre = #{criteria.nombre},
-		       apellidos = #{criteria.apellidos}
+		       apellidos = #{criteria.apellidos},
+			   pais_nacimiento_id = #{criteria.paisNacimiento.id},
+			   pais_residencia_id = #{criteria.paisResidencia.id}
 		 WHERE id = #{id}
 	</update>
 
     <sql id="contactosSelect">
-        SELECT id,nombre,apellidos
-    </sql>
+        SELECT con.id,con.nombre,con.apellidos,
+		       nacimiento.id   'nacimiento_id',nacimiento.nombre   'nacimiento_nombre',nacimiento.iso_3166_a2   'nacimiento_iso_a2',
+			   nacimiento.iso_3166_a3   'nacimiento_iso_a3',nacimiento.iso_3166_num   'nacimiento_iso_num',nacimiento.domain   'nacimiento_domain',
+               residencia.id   'residencia_id',residencia.nombre   'residencia_nombre',residencia.iso_3166_a2   'residencia_iso_a2',
+			   residencia.iso_3166_a3   'residencia_iso_a3',residencia.iso_3166_num   'residencia_iso_num',residencia.domain   'residencia_domain'
+	</sql>
 
  	<sql id="countSelect">
 		SELECT COUNT(1)
 	</sql>   
 
 	<sql id="contactosFrom">
-		FROM t_contactos
+		FROM t_contactos con,
+		     t_paises    nacimiento,
+			 t_paises    residencia
+	</sql>
+
+	<sql id="contactosJoin">
+		AND con.pais_nacimiento_id = nacimiento.id
+		AND con.pais_residencia_id = residencia.id
 	</sql>
 
 	<sql id="contactosByIdFilter">
-		AND id = #{id}
+		AND con.id = #{id}
 	</sql>
 
 	<sql id="contactosFilter">
 		<if test="criteria['nombre'] != null">
 			<bind name="nombre" value="'%' + criteria['nombre'] + '%'" />
-			AND nombre LIKE #{nombre}
+			AND con.nombre LIKE #{nombre}
 		</if>
 		<if test="criteria['apellidos'] != null">
 			<bind name="apellidos" value="'%' + criteria['apellidos'] + '%'" />
-			AND apellidos LIKE #{apellidos}
+			AND con.apellidos LIKE #{apellidos}
 		</if>
 	</sql>
 
@@ -98,7 +126,7 @@
 				</if>
 				<if
 					test="navigation.sortFieldDefault == null or navigation.sortFieldDefault.size() == 0">
-					ORDER BY nombre, apellidos
+					ORDER BY con.nombre, con.apellidos
 				</if>
 			</otherwise>
 		</choose>
