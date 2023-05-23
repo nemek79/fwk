@@ -9,13 +9,10 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import es.vir2al.fwk.app.utils.constants.GeneralAppConstants;
 
 
 public abstract class DBSessionFactoryConfig {
