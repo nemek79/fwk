@@ -38,6 +38,14 @@
 				<bind name="nombre" value="'%' + nombre + '%'" />
 				AND nombre LIKE #{nombre}
 			</if>
+			<if test="iso != null">
+				<bind name="iso" value="'%' + iso + '%'" />
+				AND (
+					iso_3166_a2 LIKE #{iso} OR
+				    iso_3166_a3 LIKE #{iso} OR
+					iso_3166_num LIKE #{iso} 
+				)
+			</if>
 		</where>
 	</select>
 
@@ -61,6 +69,14 @@
 		<if test="criteria['nombre'] != null">
 			<bind name="nombre" value="'%' + criteria['nombre'] + '%'" />
 			AND nombre LIKE #{nombre}
+		</if>
+		<if test="criteria['iso'] != null">
+			<bind name="iso" value="'%' + criteria['iso'] + '%'" />
+			AND (
+				iso_3166_a2 LIKE #{iso} OR
+				iso_3166_a3 LIKE #{iso} OR
+				iso_3166_num LIKE #{iso} 
+			)
 		</if>
 	</sql>
 
