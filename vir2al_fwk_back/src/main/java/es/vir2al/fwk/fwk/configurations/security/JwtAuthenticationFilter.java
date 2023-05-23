@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -23,9 +22,6 @@ import es.vir2al.fwk.fwk.utils.constants.SecurityConstants;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-	
-    @Autowired
-    private Environment environment;
 	
     @Autowired
     private JwtTokenProvider tokenProvider;
