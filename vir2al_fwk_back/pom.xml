@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>es.vir2al</groupId>
 	<artifactId>fwk</artifactId>
-	<version>0.2.0</version>
+	<version>0.4.0</version>
 	<name>fwk</name>
 	<description>Framework propio de Vir2al</description>
 	<properties>

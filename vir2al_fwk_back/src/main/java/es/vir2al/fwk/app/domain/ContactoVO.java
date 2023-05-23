@@ -1,19 +1,16 @@
 package es.vir2al.fwk.app.domain;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import es.vir2al.fwk.fwk.domain.BaseVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @AllArgsConstructor @ToString
-public class ContactoVO implements Serializable {
+public class ContactoVO extends BaseVO {
    
-    private Integer id;
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nombre;
 
@@ -25,7 +22,7 @@ public class ContactoVO implements Serializable {
 
     public ContactoVO() {
 
-        this.id = null;
+        super();
         this.nombre = null;
         this.apellidos = null;
         this.paisNacimiento = new PaisVO();

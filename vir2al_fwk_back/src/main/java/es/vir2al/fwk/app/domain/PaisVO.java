@@ -2,16 +2,15 @@ package es.vir2al.fwk.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import es.vir2al.fwk.fwk.domain.BaseVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @AllArgsConstructor @ToString
-public class PaisVO {
+public class PaisVO extends BaseVO {
     
-    private Integer id;
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String nombre;
 
@@ -27,6 +26,8 @@ public class PaisVO {
     private String domain;
 
     public PaisVO() {
+
+        super();
 
         this.id = null;
         this.iso3166a2 = null;
