@@ -156,7 +156,7 @@ public class ContactosController {
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ADMIN','USER')")
-	public ResponseEntity<?> updateApuesta(@PathVariable Integer id,@Valid @RequestBody ContactoVO iVo) {
+	public ResponseEntity<?> updateContacto(@PathVariable Integer id,@Valid @RequestBody ContactoVO iVo) {
 
         LOGGER.info("PARAMETROS {} - {}",id,iVo);
 

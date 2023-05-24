@@ -18,6 +18,7 @@
 		<result property="paisResidencia.iso3166a3" column="residencia_iso_a3" />
 		<result property="paisResidencia.iso3166num" column="residencia_iso_num" />
 		<result property="paisResidencia.domain" column="residencia_domain" />
+		<result property="fechaNacimiento" column="fecha_nacimiento" />
     </resultMap>
 
 	<select id="getContactoById" resultMap="contacto"
@@ -51,8 +52,9 @@
 	</select>
 
     <insert id="createContacto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_contactos(id,nombre,apellidos,pais_nacimiento_id,pais_residencia_id)
-        VALUES (null,#{criteria.nombre},#{criteria.apellidos},#{criteria.paisNacimiento.id},#{criteria.paisResidencia.id})
+        INSERT INTO t_contactos(id,nombre,apellidos,pais_nacimiento_id,pais_residencia_id,fecha_nacimiento)
+        VALUES (null,#{criteria.nombre},#{criteria.apellidos},#{criteria.paisNacimiento.id},
+		       #{criteria.paisResidencia.id},#{criteria.fechaNacimiento})
     </insert>
 
 	<update id="updateContacto">
@@ -60,12 +62,13 @@
 		   SET nombre = #{criteria.nombre},
 		       apellidos = #{criteria.apellidos},
 			   pais_nacimiento_id = #{criteria.paisNacimiento.id},
-			   pais_residencia_id = #{criteria.paisResidencia.id}
+			   pais_residencia_id = #{criteria.paisResidencia.id},
+			   fecha_nacimiento = #{criteria.fechaNacimiento}
 		 WHERE id = #{id}
 	</update>
 
     <sql id="contactosSelect">
-        SELECT con.id,con.nombre,con.apellidos,
+        SELECT con.id,con.nombre,con.apellidos,con.fecha_nacimiento,
 		       nacimiento.id   'nacimiento_id',nacimiento.nombre   'nacimiento_nombre',nacimiento.iso_3166_a2   'nacimiento_iso_a2',
 			   nacimiento.iso_3166_a3   'nacimiento_iso_a3',nacimiento.iso_3166_num   'nacimiento_iso_num',nacimiento.domain   'nacimiento_domain',
                residencia.id   'residencia_id',residencia.nombre   'residencia_nombre',residencia.iso_3166_a2   'residencia_iso_a2',
@@ -99,6 +102,10 @@
 		<if test="criteria['apellidos'] != null">
 			<bind name="apellidos" value="'%' + criteria['apellidos'] + '%'" />
 			AND con.apellidos LIKE #{apellidos}
+		</if>
+		<if test="criteria['fechaNacimiento'] != null">
+			<bind name="fechaNacimiento" value="'%' + criteria['fechaNacimiento'] + '%'" />
+			AND con.fecha_nacimiento LIKE #{fechaNacimiento}
 		</if>
 	</sql>
 
