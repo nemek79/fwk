@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="es.vir2al.fwk.app.repositories.TestsDAO">
+
+	<resultMap type="TestVO" id="test" autoMapping="true">
+		<id property="id" column="id" />
+        <result property="strKey" column="str_key" />
+		<result property="intKey" column="int_key" />
+    </resultMap>
+
+	<select id="getTestById" resultMap="test"
+		                     parameterType="map">
+		<include refid="testSelect" />
+		<include refid="testFrom" />
+		<where>
+			<include refid="testsByIdFilter" />
+		</where>
+	</select>
+
+	<select id="getTests" resultMap="test"
+		                  parameterType="map">
+		<include refid="testSelect" />
+		<include refid="testFrom" />
+	</select>
+
+    <insert id="createTest" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_tests(id,str_key,int_key)
+        VALUES (null,#{criteria.strKey},#{criteria.intKey})
+    </insert>
+
+	<update id="updateTest">
+		UPDATE t_tests
+		   SET str_key = #{criteria.strKey},
+		       int_key = #{criteria.intKey}
+		 WHERE id = #{id}
+	</update>
+
+    <delete id="deleteTest">
+        DELETE FROM t_tests
+         WHERE id = #{id}
+    </delete>
+
+    <sql id="testSelect">
+        SELECT id,str_key,int_key
+    </sql>
+
+	<sql id="testFrom">
+		FROM t_tests
+	</sql>
+
+	<sql id="testsByIdFilter">
+		AND id = #{id}
+	</sql>
+
+</mapper>
