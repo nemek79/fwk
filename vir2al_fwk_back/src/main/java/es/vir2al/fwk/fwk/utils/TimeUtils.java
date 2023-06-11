@@ -1,11 +1,13 @@
 package es.vir2al.fwk.fwk.utils;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import es.vir2al.fwk.fwk.exceptions.BaseException;
+import es.vir2al.fwk.fwk.utils.constants.ResponseConstants;
 
 public class TimeUtils {
 
@@ -46,6 +48,24 @@ public class TimeUtils {
 
 		return Calendar.getInstance().get(Calendar.YEAR);
 		
+	}
+
+	public static Date getDateFromString(String theDate, String theFormat) throws BaseException {
+
+		SimpleDateFormat formato = new SimpleDateFormat(theFormat);
+
+		try {
+
+			Date finalDate = formato.parse(theDate);
+
+			return finalDate;
+		
+		} catch (ParseException e) {
+		
+			throw new BaseException(ResponseConstants.PARSE_DATA_ERROR, "Error de parseo de fecha: "+theDate);
+
+		}
+
 	}
 
 }

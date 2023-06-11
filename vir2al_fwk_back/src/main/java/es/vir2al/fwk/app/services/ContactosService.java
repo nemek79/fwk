@@ -52,4 +52,14 @@ public interface ContactosService {
      * @throws BaseException
      */
     public void updateContacto(Integer id, ContactoVO data) throws BaseException;
+
+
+    /**
+     * Dado un contacto busca en base de datos parametros de los que posee sólo cierta información
+     * - Pais de Nacimiento: a partir del nombre del pais
+     * - Pais de Residencia: a partir del nombre del pais
+     * @param contacto
+     * @throws BaseException
+     */
+    public void explode(ContactoVO contacto) throws BaseException;
 }

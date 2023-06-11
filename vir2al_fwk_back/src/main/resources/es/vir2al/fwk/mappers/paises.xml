@@ -29,6 +29,15 @@
 		</where>
 		<include refid="paisesSort" />
 	</select>
+
+	<select id="getPaisesByNombre" resultMap="pais"
+		parameterType="map">
+		<include refid="paisesSelect" />
+		<include refid="paisesFrom" />
+		<where>
+			<include refid="paisesByNombreFilter" />
+		</where>
+	</select>
 	
 	<select id="getPaisesCount" resultType="Integer">
 		<include refid="countSelect" />
@@ -77,6 +86,13 @@
 				iso_3166_a3 LIKE #{iso} OR
 				iso_3166_num LIKE #{iso} 
 			)
+		</if>
+	</sql>
+
+	<sql id="paisesByNombreFilter">
+		<if test="data != null">
+			<bind name="nombre" value="'%' + data + '%'" />
+			AND nombre LIKE #{nombre}
 		</if>
 	</sql>
 

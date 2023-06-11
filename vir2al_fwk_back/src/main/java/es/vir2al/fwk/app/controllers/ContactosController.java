@@ -127,7 +127,7 @@ public class ContactosController {
 
 	@PostMapping()
 	@PreAuthorize("hasAnyRole('ADMIN','USER')")
-	public ResponseEntity<?> createApuesta(@Valid @RequestBody ContactoVO iVo) {
+	public ResponseEntity<?> createContacto(@Valid @RequestBody ContactoVO iVo) {
 
         LOGGER.info("PARAMETROS {}", iVo);
 

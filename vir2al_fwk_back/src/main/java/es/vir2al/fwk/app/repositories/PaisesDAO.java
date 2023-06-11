@@ -27,4 +27,8 @@ public interface PaisesDAO {
             @Param("criteria") PaisRequest criteria 
         );
 
+    public List<PaisVO> getPaisesByNombre(
+            @Param("data") String data
+        );
+
 }

@@ -1,6 +1,5 @@
 package es.vir2al.fwk.app.controllers;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import es.vir2al.fwk.app.domain.ContactoVO;
 import es.vir2al.fwk.fwk.domain.FileVO;
 import es.vir2al.fwk.fwk.domain.responses.BaseResponse;
 import es.vir2al.fwk.fwk.domain.responses.DataResponse;
 import es.vir2al.fwk.fwk.exceptions.BaseException;
+import es.vir2al.fwk.fwk.services.ExcelService;
 import es.vir2al.fwk.fwk.services.FilesService;
 import es.vir2al.fwk.fwk.utils.constants.ResponseConstants;
 
@@ -40,6 +41,9 @@ public class FilesController {
 
     @Autowired
     FilesService filesService;
+
+    @Autowired
+    ExcelService<ContactoVO> excelService;
 
 
     @GetMapping(value="/{filename:.+}",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -131,6 +135,28 @@ public class FilesController {
         }
 
         LOGGER.debug("FINAL uploadFile()");
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+
+    }
+
+    @PostMapping("/import/excel")
+    public ResponseEntity<?> importExcel(@RequestParam("file") MultipartFile file) {
+      
+        BaseResponse response = new BaseResponse();
+
+        try {
+            
+           this.excelService.save(file);
+  
+        } catch (Exception e) {
+
+            LOGGER.error(e.getMessage());
+			response.setCode(ResponseConstants.UNEXPECTED_ERROR);
+
+        }
+
+        LOGGER.debug("FINAL importExcel()");
 
         return new ResponseEntity<>(response,HttpStatus.OK);
 

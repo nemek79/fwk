@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.vir2al.fwk.app.domain.ContactoVO;
+import es.vir2al.fwk.app.domain.PaisVO;
 import es.vir2al.fwk.app.domain.requests.ContactoRequest;
 import es.vir2al.fwk.app.repositories.ContactosDAO;
+import es.vir2al.fwk.app.repositories.PaisesDAO;
 import es.vir2al.fwk.fwk.domain.requests.NavigationInfoRequest;
 import es.vir2al.fwk.fwk.exceptions.BaseException;
+import es.vir2al.fwk.fwk.utils.StringUtils;
 import es.vir2al.fwk.fwk.utils.constants.ResponseConstants;
 
 
@@ -23,6 +26,9 @@ public class ContactosServiceImpl implements ContactosService {
 
     @Autowired
     private ContactosDAO contactosDAO;
+
+    @Autowired
+    private PaisesDAO paisesDAO;
 
     @Override
     public ContactoVO getContactoById(Integer id) throws BaseException {
@@ -77,6 +83,50 @@ public class ContactosServiceImpl implements ContactosService {
     
         this.contactosDAO.updateContacto(id, data);
         
+    }
+
+    @Override
+    public void explode(ContactoVO contacto) throws BaseException {
+        
+        List<PaisVO> listaPaisesBD = null;
+
+        if (contacto == null)
+            throw new BaseException(ResponseConstants.INPUT_DATA_ERROR, "El objeto a explosionar no es correcto.");
+
+        if (!StringUtils.isEmpty(contacto.getPaisNacimiento().getNombre())) {
+
+            listaPaisesBD = this.paisesDAO.getPaisesByNombre(contacto.getPaisNacimiento().getNombre());
+
+            if (listaPaisesBD.size() == 1) {
+
+                contacto.setPaisNacimiento(listaPaisesBD.get(0));
+
+            } else {
+
+                contacto.setPaisNacimiento(null);
+
+            }
+
+        }
+
+        listaPaisesBD = null;
+
+        if (!StringUtils.isEmpty(contacto.getPaisResidencia().getNombre())) {
+
+            listaPaisesBD = this.paisesDAO.getPaisesByNombre(contacto.getPaisResidencia().getNombre());
+
+            if (listaPaisesBD.size() == 1) {
+
+                contacto.setPaisResidencia(listaPaisesBD.get(0));
+
+            } else {
+
+                contacto.setPaisResidencia(null);
+
+            }           
+
+        }
+
     }
 
 }
