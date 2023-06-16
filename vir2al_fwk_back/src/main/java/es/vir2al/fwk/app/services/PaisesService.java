@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import es.vir2al.fwk.app.domain.PaisVO;
 import es.vir2al.fwk.app.domain.requests.PaisRequest;
+import es.vir2al.fwk.app.entities.Pais;
 import es.vir2al.fwk.fwk.domain.requests.NavigationInfoRequest;
 import es.vir2al.fwk.fwk.exceptions.BaseException;
 
@@ -37,4 +38,12 @@ public interface PaisesService {
      */
     public Integer getPaisesCount(PaisRequest criteria) throws BaseException;
 
+    /**
+     * Devuelve un pais a partir de su identificador interno
+     * Usando Hibernate
+     * @param id
+     * @return un pais. Devuelve nulo en caso de no existir.
+     * @throws BaseException
+     */
+    public Pais getPaisByIdHibernate(Integer id) throws BaseException;
 }

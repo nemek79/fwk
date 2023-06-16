@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.vir2al.fwk.app.domain.PaisVO;
 import es.vir2al.fwk.app.domain.requests.PaisRequest;
+import es.vir2al.fwk.app.entities.Pais;
 import es.vir2al.fwk.app.services.PaisesService;
 import es.vir2al.fwk.fwk.domain.requests.NavigationInfoRequest;
 import es.vir2al.fwk.fwk.domain.responses.DataResponse;
@@ -118,6 +119,35 @@ public class PaisesController {
 		}
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/hibernate/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+	public ResponseEntity<DataResponse<Pais>> getContactoByIdHibernate(@PathVariable Integer id) {
+
+        LOGGER.debug("INICIO contactos.getContactoById()");
+
+        DataResponse<Pais> response = new DataResponse<Pais>();
+
+        try {
+            response.setData(this.paisesService.getPaisByIdHibernate(id));
+        
+        } catch (BaseException be) {
+
+			LOGGER.error("{} - CODE: {}", be.getMessage(), be.getCode());
+			response.setCode(be.getCode());
+
+		} catch (Exception e) {
+
+			LOGGER.error(e.getMessage());
+			response.setCode(ResponseConstants.UNEXPECTED_ERROR);
+
+		}
+
+        LOGGER.debug("FINAL contactos.getContactoById()");
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
 
     }
 
