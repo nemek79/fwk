@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,14 @@ public class PaisesController {
     @Autowired
 	private ObjectMapper objMapper;
 
+    private ModelMapper modelMapper;
+
     @Autowired
     private PaisesService paisesService;
+
+    public PaisesController() {
+        this.modelMapper = new ModelMapper();
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
@@ -124,14 +131,20 @@ public class PaisesController {
 
     @GetMapping("/hibernate/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-	public ResponseEntity<DataResponse<Pais>> getContactoByIdHibernate(@PathVariable Integer id) {
+	public ResponseEntity<?> getContactoByIdHibernate(@PathVariable Integer id) {
 
         LOGGER.debug("INICIO contactos.getContactoById()");
 
-        DataResponse<Pais> response = new DataResponse<Pais>();
+        DataResponse<PaisVO> response = new DataResponse<PaisVO>();
+        PaisVO paisResp = null;
+        Pais   paisBD = null;
 
         try {
-            response.setData(this.paisesService.getPaisByIdHibernate(id));
+
+            paisBD = this.paisesService.getPaisByIdHibernate(id);
+            paisResp = this.modelMapper.map(paisBD,PaisVO.class);
+
+            response.setData(paisResp);
         
         } catch (BaseException be) {
 
