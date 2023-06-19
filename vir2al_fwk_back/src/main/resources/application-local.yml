@@ -28,4 +28,7 @@ spring:
     multipart:
       max-file-size: 500KB
       max-request-size: 500KB
+  data:
+    mongodb:
+      uri: mongodb+srv://fwkuser:*****@cluster0.ax5bmpr.mongodb.net/usersdb?retryWrites=true&w=majority
       
